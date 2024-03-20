@@ -90,6 +90,11 @@ function createGallery(arr) {
 }
 
 function handleClick(event) {
+  event.preventDefault();  
+  if (event.target === event.currentTarget) {
+    return;
+  }
+
   const currentItem = event.target.closest('.gallery-image');
   const itemData = currentItem.dataset.source;
   const image = images.find(item => item.original === itemData);
