@@ -72,18 +72,30 @@ gallery.insertAdjacentHTML('beforeend', createGallery(images));
 gallery.addEventListener('click', handleClick);
 
 function createGallery(arr) {
-    
-    return arr
-        .map(({ preview, original, description }) => `
+  return arr
+    .map(
+      ({ preview, original, description }) => `
         <li class="gallery-item">
-  <a class="gallery-link" href="${original}">
-    <img
-      class="gallery-image"
-      src="${preview}"
-      data-source="${original}"
-      alt="${description}"
-    />
-  </a>
-</li>`).join(''); 
+            <a class="gallery-link" href="${original}">
+                <img
+                  class="gallery-image"
+                  src="${preview}"
+                  data-source="${original}"
+                  alt="${description}"
+                />
+            </a>
+        </li>`
+    )
+    .join('');
 }
 
+function handleClick(event) {
+  const currentItem = event.target.closest('.gallery-image');
+  const itemData = currentItem.dataset.source;
+  const image = images.find(item => item.original === itemData);
+
+  const instance = basicLightbox.create(`    
+    <img src="${image.original}" alt="${image.description}">    
+    `);
+  instance.show();
+}
